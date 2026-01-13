@@ -17,12 +17,16 @@ export default function Register() {
 
     try {
       await API.post("/auth/register", { name, email, password });
+
       setSuccess("Account created successfully. You can login now.");
       setName("");
       setEmail("");
       setPassword("");
-    } catch {
-      setError("User already exists or invalid data");
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+          "Something went wrong. Please try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -38,7 +42,6 @@ export default function Register() {
 
       {/* Register Card */}
       <div className="relative z-10 w-full max-w-sm bg-slate-950/80 backdrop-blur border border-slate-800 rounded-2xl shadow-2xl p-8">
-
         <h1 className="text-3xl font-bold text-center text-indigo-400 mb-2">
           Create Account
         </h1>
