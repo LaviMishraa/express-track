@@ -26,14 +26,17 @@ exports.registerUser = async (req, res) => {
     return res.status(201).json({ message: "User registered successfully" });
 
   } catch (e) {
-    // 🔴 IMPORTANT FIX: handle MongoDB duplicate key error
-    if (e.code === 11000) {
-      return res.status(409).json({ message: "User already exists" });
-    }
+  console.error("REGISTER ERROR FULL:", e);
+  console.error("ERROR NAME:", e.name);
+  console.error("ERROR MESSAGE:", e.message);
+  console.error("ERROR CODE:", e.code);
 
-    console.error("REGISTER ERROR:", e);
-    return res.status(500).json({ message: "Server error" });
+  if (e.code === 11000) {
+    return res.status(409).json({ message: "User already exists" });
   }
+
+  return res.status(500).json({ message: "Server error" });
+}
 };
 
 exports.loginUser = async (req, res) => {
